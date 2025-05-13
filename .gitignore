@@ -2,3 +2,5 @@
 __pycache__/
 .env
 /none
+/response.mp3
+/temp_audio.webm

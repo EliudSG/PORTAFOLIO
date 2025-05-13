@@ -11,14 +11,15 @@ class GPT: #clase GPT para interactuar con la API de OpenAI
         self.AK =OpenAI(api_key=api_key) # Inicializa la API de OpenAI con la clave de API
     def pedir_respuesta(self, texto):
         try:
-            response = self.AK.chat.completions.create( #genera una respuesta utilizando el modelo de chat
+            response = self.AK.chat.completions.create( #(endpoint) genera una respuesta  utilizando el modelo de chat
                 model="gpt-4o-mini",#nota, inicalmente usaba el modelo 3.5 turbo, pero en potencia este es mucho mejor y su precio tambien
                 messages=[
-                    {"role": "system", "content": "Eres un asistente grosero y malhablado"}, #lo deje como una personalidad grosera me parecio bien divertido
+                    {"role": "system", "content": "Eres un asistente muy amable"}, #lo deje como una personalidad grosera me parecio bien divertido
                     {"role": "user", "content": texto}
                 ],
             )
-            return response.choices[0].message.content.strip()
+            return response.choices[0].message.content.strip()#retorna la respuesta que se encuentra, y strip en dif partes lo vi que lo agregaron
+        #es para eliminiar  cualquier espacio al principio o final
         except Exception as e:
             print(f"Error en GPT: {str(e)}")
             return f"No se pudo responder: {str(e)}"
@@ -29,26 +30,26 @@ class Transcriptor:
         self.gpt =GPT() #inicializa (instancia) de openai (el api) y la clase GPT
 
     def T_audio(self, audio): 
-        temp_filename = "temp_audio.webm"
+        caudio = "temp_audio.webm"
         try:
-            audio.save(temp_filename) #se puso en una excepcion por si las moscas de que no se guardo
-            if not os.path.exists(temp_filename): #aca verifica que si existe o no
+            audio.save(caudio) #se puso en una excepcion por si las moscas de que no se guardo
+            #guarda el contenido del audio
+            if not os.path.exists(caudio): #aca verifica que si existe o no
                 raise ValueError("No se pudo Guardar")
-            with open(temp_filename, "rb") as f:
-                transcript = self.AK.audio.transcriptions.create(#empieza la transcripcion con whisper 
-                    #nota, me gusto el formato del youtuber del cual me inspire, respete ese diseño para una mejor visualizacion
+            with open(caudio, "rb") as f:
+                trans=self.AK.audio.transcriptions.create(#empieza la transcripcion con whisper 
                     model="whisper-1",
                     file=f 
                 )
-            texto = transcript.text.strip()#obtiene la respuesta que se mando desde el api
+            texto = trans.text.strip()#obtiene la respuestas que se mando desde el api
             if not texto:
                 raise ValueError("No se hablo en el audio") #por si no dijiste nada
-            respuesta = self.gpt.pedir_respuesta(texto) #aqui se manda a llamar el metodo de respuesta por parte de la clase GPT
+            res = self.gpt.pedir_respuesta(texto) #aqui se manda a llamar el metodo de respuesta por parte de la clase GPT
             tts = TTS() #inicializacion del tss
-            audio_path = tts.process(respuesta)
-            return { #todo esto es donde empieza el text to speech
+            audio_path = tts.process(res)
+            return {
                 "transcripcion": texto,
-                "respuesta": respuesta,
+                "respuesta": res,
                 "audio_path": f"/static/{audio_path}"
             }
         except Exception as e:
@@ -60,7 +61,7 @@ class Transcriptor:
 
 class TTS: 
     def __init__(self):
-        self.key = os.getenv('ELEVENLABS_API_KEY') #se saca el api key
+        self.key=os.getenv('ELEVENLABS_API_KEY') #se saca el api key
     def process(self, text): 
         CHUNK_SIZE = 1024
         url = "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL"
@@ -77,13 +78,13 @@ class TTS:
                 "similarity_boost": 0.55 #ajuste para que la voz suene mas similar
             }
         }
-        file_name = "response.mp3" #nombre del archivo en donde se guarda la respuesta
-        response = requests.post(url, json=data, headers=headers) #
-        with open(os.path.join("static", file_name), 'wb') as f:#nota, esto lo saque del git
+        nomFile="response.mp3" #nombre del archivo en donde se guarda la res
+        response=requests.post(url,json=data, headers=headers) #
+        with open(os.path.join("static",nomFile),'wb') as f:
             for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
-                if chunk: #segun entendi es para manejar mejores respuestas evitando con la iteracion que se pierdan datos
+                if chunk: #es para manejar mejores respuestas evitando con la iteracion que se pierdan datos
                     f.write(chunk)
-        return file_name #devuelve el arhcivo
+        return nomFile #devuelve el arhcivo
 
 #REFERENCIAS: 
 #INSPIRACIONES
@@ -120,7 +121,9 @@ class TTS:
     #https://docs.python.org/es/3/library/os.html
     #https://www.youtube.com/watch?v=GTZxX44N4ng
     #https://elevenlabs.io/app/subscription
-    #(al principio usaba esto pero sonaba mal) https://www.youtube.com/watch?v=9wnVT0i-icY
+    #https://www.youtube.com/watch?v=9wnVT0i-icY
+    #https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+    #https://developer.mozilla.org/es/docs/Web/API/FormData
 #PAGINAS EXTERNAS DE SOPORTE
     #https://openai.com/api/
     #https://fontawesome.com/icons/microphone?f=classic&s=solid
@@ -128,6 +131,7 @@ class TTS:
 #APIS
     #https://platform.openai.com/docs/api-reference/responses-streaming/response/completed
     #https://elevenlabs.io/app/subscription
+    #https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
     #MODELO
         #https://platform.openai.com/docs/models/gpt-4o-mini
         #https://platform.openai.com/docs/models/whisper-1
