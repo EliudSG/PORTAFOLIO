@@ -1,8 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 from unittest.mock import patch, MagicMock as MM
 #mock es para simular funciones y demas, con el fin de evitar llamar a los apis reales
 #en este caso una buena opcion ya que los apis son de paga
-from Virtual_Assistant import GPT, TTS, Transcriptor
+from Virtual_Assistant import GPT, Transcriptor
 from P_Web import Pag_Web_Local
 import openai as OpenAI
 import json #Pues JSON es para convertir las respuestas a diccionarios
