@@ -14,10 +14,10 @@ class Pag_Web_Local:
         if 'audio' not in request.files:
             return jsonify({
                 "transcripcion": "",
-                "respuesta": "No se recibió archivo de audio"
+                "respuesta": "NO recibio archivo de audio"
             }), 400#es 400 ya que por default pone un 200 (ok [siempre lo admite incluso si no recibio nada]) y el 400 es para solicitud incorrecta
-        audio = request.files['audio']#con request trae el audio desde la solicitud
-        resultado = self.transcriptor.T_audio(audio) #transcribe el audio y obtiene la respuesta
+        audio=request.files['audio']#con request trae el audio desde la solicitud
+        resultado=self.transcriptor.T_audio(audio) #transcribe el audio y obtiene la respuesta
         return jsonify(resultado) #devuelve el resultado como JSON
     def run(self):
         self.app.run(host='0.0.0.0', port=8000, debug=True)

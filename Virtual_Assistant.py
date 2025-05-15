@@ -5,8 +5,8 @@ import requests #lo integre del codigo del pelon, es para la comunicacion con el
 load_dotenv(".env") #cargar variables de entorno desde el archivo .env esto gracias al profe, nota: NO subir el .env a git
 class GPT: #clase GPT para interactuar con la API de OpenAI
     def __init__(self):
-        api_key =os.getenv("OPENAI_API_KEY") #meras excepciones
-        if not api_key:
+        api_key =os.getenv("OPENAI_API_KEY")
+        if not api_key: #meras excepciones
             raise ValueError("no encontrada la AK en .env")
         self.AK =OpenAI(api_key=api_key) # Inicializa la API de OpenAI con la clave de API
     def pedir_respuesta(self, texto):
@@ -19,7 +19,9 @@ class GPT: #clase GPT para interactuar con la API de OpenAI
                 ],
             )
             return response.choices[0].message.content.strip()#retorna la respuesta que se encuentra, y strip en dif partes lo vi que lo agregaron
-        #es para eliminiar  cualquier espacio al principio o final
+        #el formato de response (es una lista de objetos por cada respuesta generada por el modelo) utiliza el choice (OpenAIObject[el cual es como una especie de dic {sin serlo}])
+        #en donde se te retorna el primer valor [de las listas de obj] en donde te trae unicamente el contenido de dicho mensaje
+        # (strip es pa quitar espacios tanto al principio como al final)
         except Exception as e:
             print(f"Error en GPT: {str(e)}")
             return f"No se pudo responder: {str(e)}"
@@ -79,7 +81,8 @@ class TTS:
             }
         }
         nomFile="response.mp3" #nombre del archivo en donde se guarda la res
-        response=requests.post(url,json=data, headers=headers) #
+        response=requests.post(url,json=data, headers=headers) #hace una solicitud
+        #se espera un objeto data (diccionario) en formato JSON (post)
         with open(os.path.join("static",nomFile),'wb') as f:
             for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
                 if chunk: #es para manejar mejores respuestas evitando con la iteracion que se pierdan datos
@@ -124,10 +127,19 @@ class TTS:
     #https://www.youtube.com/watch?v=9wnVT0i-icY
     #https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
     #https://developer.mozilla.org/es/docs/Web/API/FormData
+    #https://www.youtube.com/watch?v=Xi1F2ZMAZ7Q
+    #https://www.youtube.com/watch?v=-51jxlQaxyA
+    #https://www.w3schools.com/python/python_json.asp
+    #https://docs.python.org/es/3/library/json.html
+    #https://www.freecodecamp.org/espanol/news/python-leer-archivo-json-como-cargar-json-desde-un-archivo-y-procesar-dumps/
+    #https://www.youtube.com/watch?v=-F6wVOlsEAM
+    #https://www.youtube.com/watch?v=WFRljVPHrkE
+    #https://docs.python.org/3/library/unittest.mock.html
+    #https://docs.python.org/es/3/library/unittest.html
 #PAGINAS EXTERNAS DE SOPORTE
     #https://openai.com/api/
     #https://fontawesome.com/icons/microphone?f=classic&s=solid
-    #
+    
 #APIS
     #https://platform.openai.com/docs/api-reference/responses-streaming/response/completed
     #https://elevenlabs.io/app/subscription
