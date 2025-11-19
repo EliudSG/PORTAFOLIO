@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Hoja de Punteo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div id="puntuacion-container"></div>
+
+  <div id="botones">
+    <button class="boton-faltas">F</button>
+    <button class="valor-btn">10</button>
+    <button class="valor-btn">20</button>
+    <button class="valor-btn">30</button>
+    <button class="valor-btn">-5</button>
+    <button class="valor-btn">-10</button>
+    <button class="valor-btn">-15</button>
+    <button class="borrar-btn">❌</button>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>

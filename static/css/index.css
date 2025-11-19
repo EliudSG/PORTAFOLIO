@@ -1,0 +1,299 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  overflow-x: auto;
+}
+
+body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding-right: 100px;
+}
+
+#puntuacion-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 35px;
+  margin-right: 120px; /* espacio para los botones laterales */
+  gap: 6px;
+  width: 100%;
+  max-width: 1500px;
+  min-width: 1100px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+.fila {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.nombre-input {
+  width: 176px;
+  min-width: 144px;
+  margin-right: 10px;
+  padding: 5px 6px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 3px solid #ccc;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.totales-label {
+  width: 88px;
+  min-width: 144px;
+  margin-right: 10px;
+  font-weight: bold;
+  padding: 5px 0;
+  box-sizing: border-box;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.celda {
+  width: 23px;
+  height: 23px;
+  font-size: 0.88rem;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #000;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 2px;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.celda.par {
+  background-color: #e2e2e2;
+}
+
+.celda.selected {
+  background-color: #aaa !important; 
+  outline: none !important;  
+  position: relative;
+  z-index: 10;
+}
+
+.celda:focus {
+  outline: none;
+}
+
+#botones {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  background: #222;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+  flex-wrap: wrap;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.valor-btn {
+  padding: 8px 13px;
+  border-radius: 5px;
+  background-color: #333;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.25s ease;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.valor-btn:hover {
+  background-color: #555;
+}
+
+input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-style: normal !important;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
+.falta {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+.contorno-rojo {
+  border: 2px solid red !important;
+}
+
+.boton-lateral {
+  display: block;
+  width: 40px;
+  height: 50px;
+  padding: 6px 10px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  background-color: #f5f5f5;
+  color: #000;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.25s ease;
+}
+
+.boton-lateral:hover {
+  background-color: #e2e2e2;
+}
+
+.marca-tacha {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.marca-tacha::before,
+.marca-tacha::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background-color: #93b1d4;
+  border-radius: 1px;
+}
+
+.marca-tacha::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.marca-tacha::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.marca-circulo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 3px solid #92eab4;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+.marca-paloma {
+  display: inline-block;
+  width: 20px;
+  height: 7px;
+  border-left: 3px solid #92eab4;
+  border-bottom: 3px solid #92eab4;
+  transform: rotate(-45deg);
+  margin: auto;
+}
+
+.contenedor-botones-laterales {
+  position: fixed;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  z-index: 10000;
+  background-color: transparent;
+  pointer-events: auto;
+}
+
+.grupo-botones {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.columna-botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.titulo-columna {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#contenedor-botones-superiores {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.boton-total,
+.boton-captura {
+  padding: 8px 10px;
+  min-width: 80px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.boton-captura:hover,
+.boton-total:hover {
+  background-color: #e0e0e0;
+}
+
+.nombre-equipo-verde {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border-bottom: 4px solid rgb(149, 198, 149);
+}
+
+.nombre-equipo-rojo {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border-bottom: 4px solid rgb(230, 151, 151);
+}
