@@ -14,7 +14,7 @@ Este nuevo modelo constaba con distintas capas las cuales fueron:
 
 - Capa Flatten: Transforma los mapas de características en un vector para que puedan ser procesados en la capa densa.
 
--Capas densas (Dense): Combinan la información adquirida y terminan el flujo con una capa de clasificación adaptada a la cantidad de clases en el conjunto de datos.
+- Capas densas (Dense): Combinan la información adquirida y terminan el flujo con una capa de clasificación adaptada a la cantidad de clases en el conjunto de datos.
 
 Se efectuó el entrenamiento con una cantidad controlada de epochs, incorporando métodos para optimizar la estabilidad y generalización del modelo:
 
@@ -27,8 +27,11 @@ ModelCheckpoint para guardar la versión óptima del modelo a lo largo del proce
 ## Implementación
 
 Esta parte fue realizada por: 
+
 Daniela Leal: https://www.linkedin.com/in/daniela-leal-mx/
+
 Naomi Ortíz: https://www.linkedin.com/in/naomi-ort%C3%ADz-8a9b15338/
+
 Andrea Carolina Alfaro Sánchez
 
 Este proyecto implementa un whiteboard interactivo en Python utilizando tkinter, basado en el tutorial de freeCodeCamp:
